@@ -20,9 +20,9 @@ public class DemoSecurityConfig extends WebSecurityConfigurerAdapter {
 		UserBuilder users = User.withDefaultPasswordEncoder();
 		
 		auth.inMemoryAuthentication()
-			.withUser(users.username("Vlad").password("test123").roles("ADMIN"))
+			.withUser(users.username("Vlad").password("test123").roles("EMPLOYER", "ADMIN"))
 			.withUser(users.username("Gaga").password("test123").roles("EMPLOYER"))
-			.withUser(users.username("Karim").password("test123").roles("MANAGER"));
+			.withUser(users.username("Karim").password("test123").roles("EMPLOYER", "MANAGER"));
 		
 		
 	}
@@ -31,7 +31,9 @@ public class DemoSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		
 		http.authorizeRequests()
-				.anyRequest().authenticated()
+				.antMatchers("/").hasRole("EMPLOYER")
+				.antMatchers("/leaders/**").hasRole("MANAGER")
+				.antMatchers("/admins/**").hasRole("ADMIN")
 			.and()
 			.formLogin()
 				.loginPage("/showPageforLogin")
