@@ -17,18 +17,23 @@
 		Role(s): <security:authentication property="principal.authorities" />
 	<hr>
 	
+	<security:authorize access="hasRole('MANAGER')">
 	<p>
 		<a href="${pageContext.request.contextPath }/leaders">campaign orders</a>
 		(Only for Managers)
 	</p>
 	
+	</security:authorize>
+	
 	<hr>
+	
+	<security:authorize access="hasRole('ADMIN')">
 		<p>
 		<a href="${pageContext.request.contextPath }/admins">status orders</a>
 		(Only for Admins)
-	</p>
+		</p>
+	</security:authorize>
 	
-	<hr>
 	
 	<form:form action="${pageContext.request.contextPath }/logout" method="POST">
 		<input type="submit" value="Logout">
